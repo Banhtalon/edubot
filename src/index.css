@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 /* Custom Scrollbar Styles */
 .custom-scrollbar::-webkit-scrollbar {
     width: 8px;
@@ -32,8 +34,8 @@
     animation: fadeIn 0.4s ease-out forwards;
 }
 
-/* CodeMirror Custom styling */
-.CodeMirror {
+/* CodeMirror / Editor styling overrides */
+.cm-editor {
     height: 400px !important;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
     font-size: 14px !important;
@@ -41,11 +43,31 @@
     border-radius: 12px !important;
     border: 1px solid #cbd5e1 !important;
 }
-.dark .CodeMirror {
+.dark .cm-editor {
     border-color: #334155 !important;
+    background-color: #1e1e1e !important;
 }
-.CodeMirror-gutters {
+.cm-scroller {
+    border-radius: 12px !important;
+}
+.cm-gutters {
     border-top-left-radius: 12px !important;
     border-bottom-left-radius: 12px !important;
 }
 
+/* scratchblocks container custom styling */
+.scratchblocks-container {
+    padding: 1rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    min-height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-x: auto;
+}
+.dark .scratchblocks-container {
+    background: #0f172a;
+    border-color: #334155;
+}
