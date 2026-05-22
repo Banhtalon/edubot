@@ -326,7 +326,7 @@ Yêu cầu định dạng JSON (bắt buộc có 4 trường):
 1. "keyConcepts": Tóm tắt kiến thức lý thuyết cần nắm vững liên quan đến bài tập.
 2. "stepByStep": Hướng dẫn giải từng bước chi tiết (thuật toán). BẮT BUỘC NGẮT DÒNG RÕ RÀNG GIỮA CÁC BƯỚC. Viết rõ chữ "Bước 1:", "Bước 2:" ở đầu mỗi bước.
 3. "fullSolution": Lời giải hoàn chỉnh bằng ngôn ngữ ${selectedLangName} (Code phải bọc trong \`\`\`${language}). ĐẶC BIỆT LƯU Ý: TRONG PHẦN CODE, BẮT BUỘC PHẢI VIẾT CHÚ THÍCH (COMMENT) GIẢI THÍCH CHI TIẾT CHO TỪNG DÒNG CODE ĐỂ HỌC SINH DỄ HIỂU NHẤT.
-4. "starterCode": Đoạn mã nguồn mẫu ${selectedLangName} ban đầu cho học sinh luyện tập. Đoạn mã này CHỈ chứa các chú thích (comment) hướng dẫn từng bước chi tiết (viết bằng tiếng Việt, bắt đầu bằng ký tự comment tương ứng của ngôn ngữ) và các dòng trống ở dưới mỗi chú thích để học sinh tự điền code vào. Tuyệt đối không chứa code logic hoàn chỉnh, chỉ chứa các dòng comment và dòng trống để học sinh tự lập trình ngay bên dưới.
+4. "starterCode": Đoạn mã nguồn mẫu dạng đục lỗ (fill-in-the-blank) dựa trên lời giải hoàn chỉnh để học sinh luyện tập. Hãy lấy mã nguồn lời giải chuẩn, giữ lại cấu trúc chính và thực hiện "đục lỗ" (thay thế bằng ký tự `___` hoặc `_____`) khoảng 40% - 50% các yếu tố quan trọng trên các dòng code (như tên hàm, tên biến, toán tử, từ khóa cấu trúc, hoặc các tham số). Các chú thích giải thích (comments) vẫn được giữ lại để học sinh biết cần điền gì vào chỗ trống.
 
 Lưu ý: Chỉ trả về chuỗi JSON thô, không bọc bởi \`\`\`json.`;
 

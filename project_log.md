@@ -62,6 +62,7 @@ giai python/
     *   **Chạy code WebAssembly (Python):** Tích hợp công cụ **Pyodide** chạy trực tiếp mã Python của học sinh trên trình duyệt, có Terminal bắt log stdout/stderr thời gian thực.
     *   **Giả lập chạy code bằng AI (C++, Scratch, GML):** Gửi mã nguồn lên Gemini để dự đoán logic và xuất kết quả chạy console giả lập chi tiết.
     *   **Trực quan hóa Scratch Blocks:** Tích hợp bộ chuyển đổi văn bản sang khối đồ họa Scratch 3.0 trực tiếp trên giao diện (`scratchblocks`).
+    *   **Mã mẫu dạng đục lỗ (Fill-in-the-blank):** Cải tiến `starterCode` thành dạng đục lỗ với ký tự `___` ở các vị trí quan trọng (tên hàm, từ khóa, tham số) chiếm 40% - 50% mã nguồn để học sinh điền và hoàn thành.
     *   **Cơ sở dữ liệu lịch sử:** Tự động lưu tất cả các bài tập, ảnh đề bài, mã nguồn tự viết và kết quả chấm điểm của AI vào `localStorage`.
     *   **Bảng điều khiển tiến độ:** Hiển thị số bài tập đã làm, điểm số trung bình và vẽ biểu đồ cột thể hiện điểm số 6 bài tập gần nhất.
 
