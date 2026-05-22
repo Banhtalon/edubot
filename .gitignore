@@ -1,0 +1,6 @@
+# Bỏ qua các file nháp lưu trữ cục bộ của hệ thống IDE/Editor
+.gemini/
+brain/
+*~
+.DS_Store
+.vercel
