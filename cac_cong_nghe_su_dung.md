@@ -20,6 +20,7 @@ Tài liệu này trình bày chi tiết và rõ ràng về các công nghệ, th
 | **ReactDOM** | `v18` (UMD via unpkg) | Kết nối React với DOM trình duyệt | Khởi tạo nút gốc (`ReactDOM.createRoot`) và render toàn bộ ứng dụng React vào phần tử `<div id="root">`. |
 | **Babel Standalone** | `v7` (via unpkg) | Biên dịch mã nguồn tại thời gian chạy (Runtime Transpilation) | Trình duyệt không thể hiểu trực tiếp cú pháp JSX và cú pháp ES6+ hiện đại trong một file HTML tĩnh. Babel Standalone sẽ quét qua đoạn mã nằm trong `<script type="text/babel">` và dịch nó sang JavaScript thuần (ES5) ngay khi trang web được tải. |
 | **Tailwind CSS** | CDN (`tailwindcss.com`) | Thiết kế giao diện (Styling) | Cung cấp các class tiện ích (utility classes) để thiết kế giao diện responsive (tự động tối ưu trên máy tính và điện thoại), hỗ trợ Dark Mode (`dark:bg-slate-950`), xây dựng bố cục Flexbox và Grid một cách hiện đại, trực quan mà không cần viết các tệp tin CSS riêng. |
+| **CodeMirror** | `v5.65.13` (via cdnjs) | Trình soạn thảo mã nguồn trực quan (Code Editor) | Cung cấp khung soạn thảo mã nguồn tương tác trực tiếp trên trình duyệt, hỗ trợ học sinh gõ code với tính năng thụt đầu dòng (indentation), đánh số dòng, tô màu cú pháp Python và tích hợp giao diện tối (theme: `material-darker`). |
 
 ---
 
@@ -54,6 +55,9 @@ Tài liệu này trình bày chi tiết và rõ ràng về các công nghệ, th
 4.  **Clipboard API (Fallback):**
     *   *Mục đích:* Hỗ trợ sao chép nhanh mã nguồn lời giải.
     *   *Chi tiết:* Tạo một phần tử `textarea` ẩn, gán nội dung code vào đó, thêm vào DOM, chọn văn bản (`select()`) và thực thi lệnh `document.execCommand('copy')` để lưu mã nguồn vào bộ nhớ đệm của người dùng, sau đó xóa phần tử này đi.
+5.  **Web Storage API (localStorage):**
+    *   *Mục đích:* Lưu trữ cục bộ API Key.
+    *   *Chi tiết:* Lưu trữ và truy xuất chuỗi API Key của người dùng thông qua các phương thức `localStorage.getItem("gemini_api_key")` và `localStorage.setItem("gemini_api_key", value)`, đảm bảo khóa được giữ lại qua các phiên làm việc mà không cần thiết lập máy chủ lưu trữ.
 
 ---
 
