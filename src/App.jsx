@@ -325,8 +325,8 @@ Ngôn ngữ lập trình học sinh đang học là: ${selectedLangName}.
 Yêu cầu định dạng JSON (bắt buộc có 4 trường):
 1. "keyConcepts": Tóm tắt kiến thức lý thuyết cần nắm vững liên quan đến bài tập.
 2. "stepByStep": Hướng dẫn giải từng bước chi tiết (thuật toán). BẮT BUỘC NGẮT DÒNG RÕ RÀNG GIỮA CÁC BƯỚC. Viết rõ chữ "Bước 1:", "Bước 2:" ở đầu mỗi bước.
-3. "fullSolution": Lời giải hoàn chỉnh bằng ngôn ngữ ${selectedLangName} (Code phải bọc trong \`\`\`${language}). ĐẶC BIỆT LƯU Ý: TRONG PHẦN CODE, BẮT BUỘC PHẢI VIẾT CHÚ THÍCH (COMMENT) GIẢI THÍCH CHI TIẾT CHO TỪNG DÒNG CODE ĐỂ HỌC SINH DỄ HIỂU NHẤT.
-4. "starterCode": Đoạn mã nguồn mẫu dạng đục lỗ (fill-in-the-blank) dựa trên lời giải hoàn chỉnh để học sinh luyện tập. Hãy lấy mã nguồn lời giải chuẩn, giữ lại cấu trúc chính và thực hiện "đục lỗ" (thay thế bằng ký tự '___' hoặc '_____') khoảng 70% các yếu tố trên các dòng code (chỉ hiển thị gợi ý tối đa 30% mã nguồn đáp án, như một vài từ khóa hoặc khung hàm cơ bản, còn lại đục lỗ toàn bộ). Các chú thích giải thích (comments) vẫn được giữ lại để học sinh biết cần điền gì vào chỗ trống.
+3. "fullSolution": Lời giải hoàn chỉnh bằng ngôn ngữ ${selectedLangName} (Code phải bọc trong \`\`\`${language}). ĐẶC BIỆT LƯU Ý: TRONG PHẦN CODE, BẮT BUỘC PHẦI VIẾT CHÚ THÍCH (COMMENT) GIẢI THÍCH CHI TIẾT CHO TỪNG DÒNG CODE ĐỂ HỌC SINH DỄ HIỂU NHẤT.
+4. "starterCode": Đoạn mã nguồn mẫu dạng đục lỗ (fill-in-the-blank) dựa trên lời giải hoàn chỉnh để học sinh luyện tập. Hãy lấy mã nguồn lời giải chuẩn, giữ lại cấu trúc chính và thực hiện "đục lỗ" (thay thế bằng ký tự '___' hoặc '_____') khoảng 50% các yếu tố quan trọng trên các dòng code chính (hiển thị gợi ý 50% mã nguồn đáp án, 50% còn lại đục lỗ). ĐẶC BIỆT LƯU Ý: TOÀN BỘ CÁC DÒNG CHÚ THÍCH (COMMENTS) HƯỚNG DẪN GỢI Ý PHẢI ĐƯỢC GIỮ LẠI ĐẦY ĐỦ VÀ IN RA TOÀN BỘ (KHÔNG ĐỤC LỖ, KHÔNG LƯỢC BỎ) để học sinh biết cần điền gì vào chỗ trống.
 
 Lưu ý: Chỉ trả về chuỗi JSON thô, không bọc bởi \`\`\`json.`;
 
