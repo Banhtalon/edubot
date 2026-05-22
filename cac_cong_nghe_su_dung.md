@@ -32,7 +32,7 @@ Tài liệu này trình bày chi tiết và rõ ràng về các công nghệ, th
 *   **Mô hình sử dụng:** `gemini-3.1-flash-lite` - Tối ưu cho các tác vụ đa phương tiện (quét ảnh đề bài), có tốc độ phản hồi rất nhanh và tiết kiệm chi phí.
 *   **Truyền tải đa phương tiện:** Mã hóa hình ảnh bài tập thành định dạng Base64 và truyền trực tiếp trong payload HTTP POST đến Google Gemini API.
 *   **Structured JSON Output:** Ép kiểu phản hồi của AI tuân thủ cấu trúc JSON cố định bằng cách dùng `responseMimeType: "application/json"` cùng `responseSchema`.
-    *   *Schema Phân tích Đề:* Chứa các trường `keyConcepts` (lý thuyết), `stepByStep` (các bước giải), `fullSolution` (đáp án hoàn chỉnh), và `starterCode` (mã nguồn đục lỗ với ký tự `___` gợi ý học sinh điền).
+    *   *Schema Phân tích Đề:* Chứa các trường `keyConcepts` (lý thuyết), `stepByStep` (các bước giải), `fullSolution` (đáp án hoàn chỉnh), và `starterCode` (mã nguồn đục lỗ hiển thị tối đa 30% gợi ý đáp án, đục lỗ 70% còn lại với ký tự `___` để học sinh tự điền).
     *   *Schema Chấm Bài:* Chứa các trường `status` (correct/partial/incorrect), `score` (điểm số từ 0 đến 100), `feedback` (nhận xét chi tiết), và `suggestedFix` (mã nguồn sửa đổi).
 
 ### B. Cơ chế Chạy mã nguồn (Execution Engine)
