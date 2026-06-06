@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { signOut } from 'firebase/auth';
-import { auth, saveExam, getExams, setExamActive, subscribeToExamResults } from '../firebase';
+import { auth, saveExam, getExams, setExamActive, subscribeToExamResults, deleteExam } from '../firebase';
 
 // ──── Gemini API ─ phân tích ảnh đề thi ────────────────────────────────
 async function analyzeExamFiles(files, apiKey) {
@@ -217,17 +217,24 @@ function ExamManager({ apiKey, onApiKeySave, showToast }) {
     }
   };
 
-  const handleToggleActive = async (exam) => {
+  const handleToggleActive = async (examId, isActive) => {
     try {
-      // Tắt tất cả đề khác trước khi bật đề này
-      if (!exam.isActive) {
-        await Promise.all(exams.filter((e) => e.isActive && e.id !== exam.id).map((e) => setExamActive(e.id, false)));
-      }
-      await setExamActive(exam.id, !exam.isActive);
-      showToast(exam.isActive ? 'Đã tắt đề thi.' : 'Đã kích hoạt đề thi cho học sinh!');
-      await loadExams();
+      await setExamActive(examId, !isActive);
+      setExams(exams.map(e => e.id === examId ? { ...e, isActive: !isActive } : e));
+      showToast(isActive ? 'Đã thu đề' : 'Đã phát đề thành công!');
     } catch (e) {
-      showToast('Lỗi cập nhật: ' + e.message, 'error');
+      showToast('Lỗi khi đổi trạng thái đề thi!', 'error');
+    }
+  };
+
+  const handleDeleteExam = async (examId) => {
+    if (!window.confirm("Bạn có chắc chắn muốn xóa đề thi này không? Dữ liệu không thể khôi phục!")) return;
+    try {
+      await deleteExam(examId);
+      setExams(exams.filter(e => e.id !== examId));
+      showToast('Đã xóa đề thi!');
+    } catch (e) {
+      showToast('Lỗi xóa đề thi: ' + e.message, 'error');
     }
   };
 
@@ -465,16 +472,25 @@ function ExamManager({ apiKey, onApiKeySave, showToast }) {
                   {exam.createdAt?.toDate?.()?.toLocaleDateString('vi-VN') || 'Vừa tạo'}
                 </p>
               </div>
-              <button
-                onClick={() => handleToggleActive(exam)}
-                className={`ml-4 px-4 py-2 text-sm font-bold rounded-xl transition cursor-pointer flex-shrink-0 ${
-                  exam.isActive
-                    ? 'bg-red-900/50 text-red-300 hover:bg-red-900/70 border border-red-800/50'
-                    : 'bg-emerald-900/50 text-emerald-300 hover:bg-emerald-900/70 border border-emerald-800/50'
-                }`}
-              >
-                {exam.isActive ? 'Tắt đề' : 'Mở đề'}
-              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => handleToggleActive(exam.id, exam.isActive)}
+                  className={`px-4 py-2 text-sm font-bold rounded-xl transition cursor-pointer flex-1 ${
+                    exam.isActive
+                      ? 'bg-red-500/10 text-red-400 hover:bg-red-500/20'
+                      : 'bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20'
+                  }`}
+                >
+                  {exam.isActive ? '🛑 Thu đề' : '🚀 Phát đề'}
+                </button>
+                <button
+                  onClick={() => handleDeleteExam(exam.id)}
+                  className="px-3 py-2 text-sm font-bold bg-slate-800 text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-xl transition cursor-pointer"
+                  title="Xóa đề thi"
+                >
+                  🗑️
+                </button>
+              </div>
             </div>
           ))}
         </div>

@@ -6,6 +6,7 @@ import {
   getDocs,
   doc,
   updateDoc,
+  deleteDoc,
   query,
   orderBy,
   where,
@@ -61,6 +62,10 @@ export async function getExams() {
   const q = query(collection(db, 'exams'), orderBy('createdAt', 'desc'));
   const snap = await getDocs(q);
   return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+}
+
+export async function deleteExam(examId) {
+  return await deleteDoc(doc(db, 'exams', examId));
 }
 
 export async function setExamActive(examId, isActive) {
