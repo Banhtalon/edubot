@@ -37,5 +37,12 @@ src/
     *   Học sinh nhập Tên và Lớp, sau đó làm bài bằng CodeMirror Editor.
     *   Sử dụng Gemini API để đối chiếu mã nguồn học sinh nộp với `sampleSolution` của giáo viên để chấm điểm. Kết quả sau đó được đẩy lưu trữ ngược lên Firestore.
 
+### 🟢 Triển khai tự động lên GitHub Pages
+*   **Vấn đề:** Ứng dụng sau khi build bằng Vite gặp lỗi trắng trang do không tìm thấy đường dẫn tĩnh khi chạy trên GitHub Pages (thư mục con).
+*   **Giải pháp:**
+    *   Bổ sung thuộc tính `base` vào `vite.config.js` để khớp với tên thư mục (vd: `/edubot/`).
+    *   Tích hợp module `gh-pages` để đẩy sản phẩm đã build (thư mục `dist`) lên nhánh `gh-pages`.
+    *   Tạo các script `predeploy` và `deploy` trong `package.json` nhằm đơn giản hóa quá trình phát hành chỉ với một lệnh `npm run deploy`.
+
 ---
-*Tài liệu được cập nhật mới nhất để phản ánh luồng kiến trúc mới của ExamAI.*
+*Tài liệu được cập nhật mới nhất để phản ánh luồng kiến trúc mới của ExamAI và các thiết lập Deploy mới.*

@@ -34,7 +34,7 @@ Dự án cho phép giáo viên tạo các bài kiểm tra lập trình, và họ
 * **Database & Auth:** Firebase (Firestore, Authentication)
 * **Trí tuệ nhân tạo:** Google Gemini API (gemini-3.1-flash-lite) để chấm điểm và phân tích code.
 
-## 📖 Hướng Dẫn Cài Đặt
+## 📖 Hướng Dẫn Cài Đặt & Chạy Cục Bộ
 
 1. **Yêu cầu hệ thống:** NodeJS 18+, npm.
 2. **Cài đặt thư viện:** Chạy lệnh `npm install`
@@ -42,3 +42,14 @@ Dự án cho phép giáo viên tạo các bài kiểm tra lập trình, và họ
    * Đổi tên file `.env.example` thành `.env`.
    * Điền thông tin cấu hình Firebase vào file `.env`.
 4. **Khởi chạy Development Server:** Chạy lệnh `npm run dev`
+
+## 🚀 Hướng Dẫn Triển Khai (Deploy) lên GitHub Pages
+
+Dự án đã được cấu hình sẵn để dễ dàng deploy lên GitHub Pages thông qua `gh-pages`.
+
+1. Đảm bảo bạn đã cấu hình đúng đường dẫn `base` trong `vite.config.js` (ví dụ: `base: '/edubot/'`).
+2. Chạy lệnh sau để tự động build và push lên nhánh `gh-pages`:
+   ```bash
+   npm run deploy
+   ```
+3. Truy cập vào phần Settings > Pages của kho chứa trên GitHub và đảm bảo Source được chọn là nhánh `gh-pages`.
