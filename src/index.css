@@ -36,38 +36,45 @@
 
 /* CodeMirror / Editor styling overrides */
 .cm-editor {
-    height: 400px !important;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
     font-size: 14px !important;
-    line-height: 1.6 !important;
-    border-radius: 12px !important;
-    border: 1px solid #cbd5e1 !important;
+    line-height: 1.65 !important;
 }
 .dark .cm-editor {
-    border-color: #334155 !important;
-    background-color: #1e1e1e !important;
+    background-color: #0f172a !important;
 }
 .cm-scroller {
-    border-radius: 12px !important;
-}
-.cm-gutters {
-    border-top-left-radius: 12px !important;
-    border-bottom-left-radius: 12px !important;
+    min-height: 300px;
 }
 
-/* scratchblocks container custom styling */
-.scratchblocks-container {
-    padding: 1rem;
-    background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    min-height: 120px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow-x: auto;
+/* Smooth scale-in popup animation */
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.92);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
-.dark .scratchblocks-container {
-    background: #0f172a;
-    border-color: #334155;
+.animate-scale-in {
+    animation: scaleIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Gradient text utility */
+.gradient-text {
+    background: linear-gradient(135deg, #818cf8 0%, #c084fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* line-clamp utility */
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
