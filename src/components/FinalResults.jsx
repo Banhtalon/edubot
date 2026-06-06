@@ -8,11 +8,14 @@ export default function FinalResults({ gradings, exam, studentInfo, sessionId, o
   
   const [leaderboard, setLeaderboard] = useState([]);
 
-  // Tính tổng điểm (trung bình dựa trên TỔNG SỐ CÂU HỎI của đề, không phải số câu đã làm)
-  // Tính tổng điểm các câu đã làm
   const totalEarnedScore = gradings.reduce((sum, g) => sum + (g.score || 0), 0);
   const totalQuestions = exam.questions?.length || 1;
   const totalScore = Math.round(totalEarnedScore / totalQuestions);
+
+  // Điểm thành phần
+  const totalLogicScore = Math.round(gradings.reduce((sum, g) => sum + (g.logicScore || g.score || 0), 0) / totalQuestions);
+  const totalSyntaxScore = Math.round(gradings.reduce((sum, g) => sum + (g.syntaxScore || g.score || 0), 0) / totalQuestions);
+  const totalCleanScore = Math.round(gradings.reduce((sum, g) => sum + (g.cleanScore || g.score || 0), 0) / totalQuestions);
 
   const correctCount = gradings.filter((g) => g.status === 'correct').length;
   const partialCount = gradings.filter((g) => g.status === 'partial').length;
@@ -36,6 +39,9 @@ export default function FinalResults({ gradings, exam, studentInfo, sessionId, o
           questionDetails: gradings.map((g) => ({
             questionIndex: g.questionIndex,
             questionNumber: g.questionNumber,
+            logicScore: g.logicScore || g.score,
+            syntaxScore: g.syntaxScore || g.score,
+            cleanScore: g.cleanScore || g.score,
             score: g.score,
             status: g.status,
             feedback: g.feedback,
@@ -102,6 +108,25 @@ export default function FinalResults({ gradings, exam, studentInfo, sessionId, o
             </div>
             <div className="text-slate-400 text-lg font-semibold mb-4">/ 100 điểm</div>
             <p className={`font-bold text-lg ${scoreColor(totalScore)}`}>{msg.text}</p>
+
+            {/* Điểm thành phần */}
+            <div className="mt-8 space-y-4 text-left max-w-sm mx-auto">
+              {[
+                { label: 'Tư duy Logic', score: totalLogicScore, color: 'bg-blue-500', icon: '🧠' },
+                { label: 'Cú pháp (Syntax)', score: totalSyntaxScore, color: 'bg-violet-500', icon: '⌨️' },
+                { label: 'Clean Code', score: totalCleanScore, color: 'bg-emerald-500', icon: '✨' },
+              ].map((item) => (
+                <div key={item.label}>
+                  <div className="flex justify-between text-sm mb-1.5">
+                    <span className="text-slate-300 font-semibold flex items-center gap-2">{item.icon} {item.label}</span>
+                    <span className="text-slate-400 font-bold">{item.score}/100</span>
+                  </div>
+                  <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
+                    <div className={`h-full ${item.color} rounded-full transition-all duration-1000`} style={{ width: `${item.score}%` }}></div>
+                  </div>
+                </div>
+              ))}
+            </div>
 
             <div className="grid grid-cols-3 gap-3 mt-6">
               {[

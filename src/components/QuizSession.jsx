@@ -20,8 +20,14 @@ async function gradeStudentCode(questionText, sampleSolution, studentCode, apiKe
       parts: [
         {
           text: `Bạn là giáo viên chấm bài Python. Chấm điểm code học sinh so với yêu cầu đề bài và code mẫu.
-Tiêu chí: logic đúng (60%), cú pháp hợp lệ (20%), code sạch (20%).
-Trả về JSON: score (0-100, integer), status ("correct"/"partial"/"incorrect"), feedback (nhận xét tiếng Việt ngắn gọn ≤ 80 từ, chỉ ra điểm sai và điểm cần cải thiện).`,
+Tiêu chí: logic thuật toán đúng (trọng số 50%), cú pháp hợp lệ (20%), code sạch và dễ hiểu (30%).
+Trả về JSON: 
+- logicScore (0-100)
+- syntaxScore (0-100)
+- cleanScore (0-100)
+- score (tổng điểm trung bình gia quyền 0-100)
+- status ("correct"/"partial"/"incorrect")
+- feedback (nhận xét tiếng Việt ngắn gọn ≤ 80 từ, chỉ ra điểm sai và điểm cần cải thiện).`,
         },
       ],
     },
@@ -30,11 +36,14 @@ Trả về JSON: score (0-100, integer), status ("correct"/"partial"/"incorrect"
       responseSchema: {
         type: 'OBJECT',
         properties: {
+          logicScore: { type: 'INTEGER' },
+          syntaxScore: { type: 'INTEGER' },
+          cleanScore: { type: 'INTEGER' },
           score: { type: 'INTEGER' },
           status: { type: 'STRING' },
           feedback: { type: 'STRING' },
         },
-        required: ['score', 'status', 'feedback'],
+        required: ['logicScore', 'syntaxScore', 'cleanScore', 'score', 'status', 'feedback'],
       },
     },
   };
@@ -244,6 +253,9 @@ export default function QuizSession({ exam, studentInfo, sessionId, initialDraft
         questionNumber: currentQuestion.questionNumber,
         questionText: currentQuestion.questionText,
         userCode: codeToSubmit,
+        logicScore: result.logicScore || result.score,
+        syntaxScore: result.syntaxScore || result.score,
+        cleanScore: result.cleanScore || result.score,
         score: result.score,
         status: result.status,
         feedback: result.feedback,

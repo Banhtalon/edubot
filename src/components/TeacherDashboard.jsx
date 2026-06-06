@@ -74,6 +74,29 @@ Chỉ trả về JSON thô, không dùng markdown.`;
   return JSON.parse(text.replace(/^```json\s*/i, '').replace(/```\s*$/, '').trim());
 }
 
+// ──── Gemini API ─ Tổng hợp lỗi sai lớp học ────────────────────────────────
+async function analyzeClassInsights(results, apiKey) {
+  const feedbacks = results.filter(r => r.status === 'completed').map(r => {
+    return `Học sinh: ${r.studentName}\n` + (r.questionDetails || []).map(q => `- Câu ${q.questionNumber} (Điểm ${q.score}): ${q.feedback}`).join('\n');
+  }).join('\n\n');
+
+  if (!feedbacks) return "Chưa có đủ dữ liệu để phân tích.";
+
+  const payload = {
+    contents: [{ role: 'user', parts: [{ text: `Dưới đây là nhận xét chấm bài của các học sinh trong lớp:\n\n${feedbacks}\n\nHãy tổng hợp lại các lỗi sai phổ biến nhất và đưa ra gợi ý sư phạm cho giáo viên.` }] }],
+    systemInstruction: { parts: [{ text: `Bạn là chuyên gia sư phạm. Phân tích nhận xét chấm bài và viết một báo cáo ngắn gọn (150-200 từ) tóm tắt: 1. Lỗi phổ biến nhất học sinh hay mắc phải. 2. Khái niệm nào học sinh chưa hiểu rõ. 3. Gợi ý bài giảng tiếp theo cho giáo viên.` }] },
+    generationConfig: { responseMimeType: 'text/plain' },
+  };
+
+  const res = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=${apiKey}`,
+    { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }
+  );
+  if (!res.ok) throw new Error(`Gemini API lỗi: ${res.status}`);
+  const data = await res.json();
+  return data.candidates?.[0]?.content?.parts?.[0]?.text || "Không có báo cáo.";
+}
+
 // ──── Tab: Quản lý đề thi ────────────────────────────────────────────────
 function ExamManager({ apiKey, onApiKeySave, showToast }) {
   const [exams, setExams] = useState([]);
@@ -461,10 +484,12 @@ function ExamManager({ apiKey, onApiKeySave, showToast }) {
 }
 
 // ──── Tab: Giám sát kết quả & Live Monitor ────────────────────────────────
-function ResultsViewer({ exams, showToast }) {
+function ResultsViewer({ exams, apiKey, showToast }) {
   const [selectedExamId, setSelectedExamId] = useState('');
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [classInsight, setClassInsight] = useState('');
 
   useEffect(() => {
     if (!selectedExamId) {
@@ -479,6 +504,47 @@ function ResultsViewer({ exams, showToast }) {
 
     return () => unsubscribe();
   }, [selectedExamId]);
+
+  const handleAnalyzeInsights = async () => {
+    if (!apiKey) { showToast('Vui lòng lưu cấu hình Gemini API Key trước!', 'error'); return; }
+    if (completedResults.length === 0) { showToast('Chưa có học sinh nào hoàn thành bài để phân tích!', 'error'); return; }
+    
+    setIsAnalyzing(true);
+    try {
+      const insight = await analyzeClassInsights(results, apiKey);
+      setClassInsight(insight);
+      showToast('Phân tích lớp học thành công!');
+    } catch (e) {
+      showToast('Lỗi phân tích: ' + e.message, 'error');
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
+  const exportToCSV = () => {
+    if (results.length === 0) { showToast('Không có dữ liệu để xuất!', 'error'); return; }
+    const header = ['STT', 'Họ tên', 'Lớp', 'Trạng thái', 'Số lần gian lận', 'Điểm tổng', 'Thời gian nộp'];
+    const rows = results.map((r, i) => [
+      i + 1,
+      `"${r.studentName}"`,
+      `"${r.className}"`,
+      r.status === 'completed' ? 'Đã nộp' : 'Đang thi',
+      r.cheatCount,
+      r.status === 'completed' ? r.totalScore : '',
+      `"${r.submittedAt?.toDate?.()?.toLocaleString('vi-VN') || ''}"`
+    ]);
+    const csvContent = '\uFEFF' + [header, ...rows].map(e => e.join(',')).join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    const activeExamName = exams.find(e => e.id === selectedExamId)?.title || 'Exam';
+    link.setAttribute('download', `BangDiem_${activeExamName.replace(/\\s+/g, '_')}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    showToast('Đã tải xuống bảng điểm!');
+  };
 
   const completedResults = results.filter(r => r.status === 'completed');
   const doingResults = results.filter(r => r.status === 'doing');
@@ -520,6 +586,38 @@ function ResultsViewer({ exams, showToast }) {
         </div>
       ) : results.length > 0 && (
         <div className="space-y-4 animate-fade-in">
+          {/* Action Buttons */}
+          <div className="flex justify-end gap-3 mb-2">
+            <button
+              onClick={handleAnalyzeInsights}
+              disabled={isAnalyzing || completedResults.length === 0}
+              className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white text-sm font-bold rounded-xl transition disabled:opacity-50 cursor-pointer shadow-lg shadow-indigo-600/20"
+            >
+              {isAnalyzing ? (
+                <><div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> Phân tích...</>
+              ) : '🧠 Phân Tích Lớp Học'}
+            </button>
+            <button
+              onClick={exportToCSV}
+              className="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold rounded-xl transition cursor-pointer shadow-lg shadow-emerald-600/20"
+            >
+              📥 Xuất CSV
+            </button>
+          </div>
+
+          {/* AI Insight Report */}
+          {classInsight && (
+            <div className="bg-indigo-950/30 border border-indigo-500/30 rounded-2xl p-5 mb-4 relative overflow-hidden animate-fade-in">
+              <div className="absolute top-0 right-0 p-4 opacity-10 text-6xl">🧠</div>
+              <h4 className="text-indigo-300 font-bold mb-2 flex items-center gap-2">
+                <span>✨</span> Báo cáo Sư phạm từ AI
+              </h4>
+              <p className="text-slate-200 text-sm leading-relaxed whitespace-pre-wrap relative z-10">
+                {classInsight}
+              </p>
+            </div>
+          )}
+
           {/* Stats row */}
           <div className="grid grid-cols-4 gap-3">
             {[
@@ -670,7 +768,7 @@ export default function TeacherDashboard({ user, apiKey, onApiKeySave, onLogout,
             />
           )}
           {activeTab === 'results' && (
-            <ResultsViewer exams={exams} showToast={showToast} />
+            <ResultsViewer exams={exams} apiKey={apiKey} showToast={showToast} />
           )}
         </div>
       </div>
