@@ -38,8 +38,8 @@ Dự án không có server backend tự viết mà giao tiếp hoàn toàn qua F
 
 *   **Mô hình AI:** `gemini-3.1-flash-lite`
 *   **Nhiệm vụ chính:**
-    *   Làm giám khảo ảo. Đọc đề bài, đọc `sampleSolution` của giáo viên và đối chiếu sát sao với mã nguồn được học sinh nộp.
-    *   Chấm và trả về điểm số khách quan (0-100) và `feedback` thông qua định dạng cấu trúc JSON ép buộc (`responseSchema`).
+    *   **Giám khảo ảo:** Đối chiếu mã nguồn học sinh với `sampleSolution`. Chấm điểm theo 3 chiều (Logic 50%, Syntax 20%, Clean Code 30%) và trả về định dạng JSON nghiêm ngặt (`responseSchema` chứa các trường `logicScore`, `syntaxScore`, `cleanScore`).
+    *   **Trợ lý sư phạm:** Quét toàn bộ nhận xét của một lớp học, tổng hợp lỗi sai phổ biến và viết một báo cáo trực tiếp cho Giáo viên thông qua tính năng *Phân Tích Lớp Học*.
 *   **Lưu trữ API Key:** Khóa API của mô hình Gemini được giáo viên nhập vào thiết lập một lần trên Dashboard và được lưu tại `localStorage`, giúp gọi trực tiếp API qua fetch tại phía client một cách bảo mật tương đối theo phiên người dùng.
 
 ---

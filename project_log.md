@@ -44,5 +44,14 @@ src/
     *   Tích hợp module `gh-pages` để đẩy sản phẩm đã build (thư mục `dist`) lên nhánh `gh-pages`.
     *   Tạo các script `predeploy` và `deploy` trong `package.json` nhằm đơn giản hóa quá trình phát hành chỉ với một lệnh `npm run deploy`.
 
+### 🟢 Nâng cấp Chấm điểm Đa chiều & Công cụ Sư phạm (Mới)
+*   **Chấm điểm đa chiều:** 
+    *   Tinh chỉnh hệ thống AI để không chỉ trả về một điểm tổng, mà bóc tách thành 3 tiêu chí: Tư duy Logic (50%), Cú pháp (20%), và Clean Code (30%).
+    *   Nâng cấp trang `FinalResults` hiển thị tiến trình của 3 tiêu chí này bằng các progress bar trực quan, giúp học sinh nhận diện rõ điểm mạnh/yếu.
+*   **Công cụ cho Giáo viên:**
+    *   **Phân tích Lớp học bằng AI:** Bổ sung chức năng gọi Gemini phân tích tổng hợp toàn bộ feedback của học sinh trong lớp, từ đó tóm tắt lại "vấn đề phổ biến nhất" và đưa ra gợi ý bài giảng tiếp theo.
+    *   **Trích xuất Bảng điểm:** Thêm tính năng xuất dữ liệu kết quả thi thành định dạng CSV (hỗ trợ UTF-8 BOM tiếng Việt) để nhập vào Excel.
+    *   **Quản lý Đề thi:** Thêm tính năng xóa hoàn toàn đề thi khỏi hệ thống (Database).
+
 ---
 *Tài liệu được cập nhật mới nhất để phản ánh luồng kiến trúc mới của ExamAI và các thiết lập Deploy mới.*

@@ -8,9 +8,10 @@ Dự án cho phép giáo viên tạo các bài kiểm tra lập trình, và họ
 1. **Dành cho Giáo viên (Teacher Dashboard):**
    * Đăng nhập an toàn qua hệ thống Firebase Authentication.
    * Quản lý API Key của Google Gemini.
-   * Tạo bài kiểm tra lập trình mới (điền đề bài, gợi ý và mã nguồn tham khảo).
-   * Kích hoạt/Vô hiệu hóa bài kiểm tra.
-   * Theo dõi kết quả thi của học sinh (Lưu trữ trên Firestore).
+   * Tạo bài kiểm tra lập trình mới và Quản lý đề thi (Phát đề/Thu đề/Xoá đề thi).
+   * Theo dõi kết quả thi của học sinh thời gian thực (Live Monitor).
+   * 🧠 **Phân Tích Lớp Học:** Nhờ AI tóm tắt lỗi sai phổ biến của cả lớp để lên kế hoạch ôn tập.
+   * 📥 **Xuất Excel (CSV):** Tải bảng điểm học sinh cực kỳ nhanh chóng.
 
 2. **Dành cho Học sinh (Student Interface):**
    * Tham gia thi bằng cách nhập Tên và Lớp.
@@ -19,8 +20,8 @@ Dự án cho phép giáo viên tạo các bài kiểm tra lập trình, và họ
 
 3. **Chấm bài tự động với AI:**
    * Sau khi nộp bài, Gemini AI sẽ tự động phân tích mã nguồn của học sinh.
-   * So sánh với đáp án mẫu của giáo viên.
-   * Đưa ra điểm số (0-100) và nhận xét chi tiết (Feedback) cho từng câu hỏi.
+   * 🎯 **Chấm điểm đa chiều:** Đánh giá dựa trên 3 tiêu chí cốt lõi: Tư duy Logic (50%), Cú pháp (20%), và Clean Code (30%).
+   * Cung cấp nhận xét chi tiết (Feedback) và hiển thị kết quả bằng các thanh tiến trình trực quan.
 
 4. **Giao diện hiện đại & Dark Mode:**
    * Hệ thống UI xây dựng hoàn toàn bằng Tailwind CSS v4 với hiệu ứng Glassmorphism.
